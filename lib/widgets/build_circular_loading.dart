@@ -6,7 +6,6 @@ class BuildCircularLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      heightFactor: 20.0,
       child: CircularProgressIndicator(),
     );
   }

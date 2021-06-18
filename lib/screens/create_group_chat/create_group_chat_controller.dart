@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/add_people_model.dart';
+import '../../routes/app_routes.dart';
 
 class CreateGroupChatController extends GetxController
     with SingleGetTickerProviderMixin {
@@ -83,10 +84,52 @@ class CreateGroupChatController extends GetxController
     'Baseball',
   ];
 
+  final searchPeopleChatList = [
+    AddPeopleModel(
+      imageUrl:
+          'https://i.pinimg.com/originals/2f/da/7f/2fda7f7f4290fc93445002a4d89f5bd1.png',
+      name: 'George Lengyey',
+      role: 'CEO',
+    ),
+    AddPeopleModel(
+      imageUrl:
+          'https://www.vhv.rs/dpng/d/5-55710_face-people-png-transparent-png.png',
+      name: 'Surensra Bahti',
+      role: 'UI/UX Designer',
+    ),
+    AddPeopleModel(
+      imageUrl:
+          'https://e7.pngegg.com/pngimages/362/857/png-clipart-smile-dentistry-smile-child-people.png',
+      name: 'Alexandra Pierce',
+      role: 'HeyHub Ltd. Facilities Manager',
+    ),
+    AddPeopleModel(
+      imageUrl:
+          'https://e7.pngegg.com/pngimages/362/857/png-clipart-smile-dentistry-smile-child-people.png',
+      name: 'Jessy Walker',
+      role: 'CEO',
+    ),
+    AddPeopleModel(
+      imageUrl:
+          'https://e7.pngegg.com/pngimages/362/857/png-clipart-smile-dentistry-smile-child-people.png',
+      name: 'Jessy Walker',
+      role: 'CEO',
+    ),
+    AddPeopleModel(
+      imageUrl:
+          'https://e7.pngegg.com/pngimages/362/857/png-clipart-smile-dentistry-smile-child-people.png',
+      name: 'Jessy Walker',
+      role: 'CEO',
+    ),
+  ];
+
   void removePeopleFromChat(int index) {
     addPeopleChatList.removeAt(index);
     update();
   }
+
+  void toAddPeopleToConversation() =>
+      Get.toNamed(AppRoutes.addPeopleToConversation);
 
   @override
   void onClose() {

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:group_chat_ui/widgets/build_custom_circular_button.dart';
+import 'add_people_to_conversation.dart';
+import 'create_group_chat.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 import '../../../res/app_colors.dart';
 import '../../../res/app_styles.dart';
@@ -17,6 +22,7 @@ class BuildAddPeopleToChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final createGroupChatController = Get.find<CreateGroupChatController>();
     return Container(
       decoration: AppStyles.kContainerBoxDecoration,
       child: Padding(
@@ -32,19 +38,39 @@ class BuildAddPeopleToChat extends StatelessWidget {
                   color: AppColors.darkGrey,
                   fontWeight: FontWeight.w600,
                 ),
-                Material(
-                  color: AppColors.transparent,
-                  child: InkWell(
-                    onTap: () {},
-                    child: CircleAvatar(
-                      radius: 15.0,
-                      backgroundColor: AppColors.primary,
-                      child: Icon(
-                        FeatherIcons.plus,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
+                BuildCustomCircularButton(
+                  iconData: FontAwesomeIcons.plus,
+                  onTap: () {
+                    if (UniversalPlatform.isWeb) {
+                      createGroupChatController.toAddPeopleToConversation();
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            titlePadding: EdgeInsets.all(1.h),
+                            contentPadding: EdgeInsets.all(1.h),
+                            backgroundColor: AppColors.scaffoldBackgroundColor,
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                BuildCreateGroupChatRow(
+                                  text: 'Add people to conversation',
+                                ),
+                                BuildCustomCircularButton(
+                                  iconData: FontAwesomeIcons.times,
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                ),
+                              ],
+                            ),
+                            content: AddPeopleToConversation(),
+                          );
+                        },
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -78,7 +104,7 @@ class BuildAddPeopleToChat extends StatelessWidget {
                         child: Row(
                           children: [
                             CachedNetworkImage(
-                              imageUrl: people.imageUrl,
+                              imageUrl: people.imageUrl!,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 height: 2.5.h,
@@ -102,7 +128,7 @@ class BuildAddPeopleToChat extends StatelessWidget {
                             SizedBox(width: 3.w),
                             Expanded(
                               child: BuildText(
-                                people.name,
+                                people.name!,
                                 fontSize: 10.5,
                                 color: AppColors.white,
                                 overflow: TextOverflow.ellipsis,
@@ -131,6 +157,33 @@ class BuildAddPeopleToChat extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BuildCachedImage extends StatelessWidget {
+  final String? imageUrl;
+  final double? width;
+  final double? height;
+
+  BuildCachedImage({
+    required this.imageUrl,
+    this.width,
+    this.height,
+  }) : assert(imageUrl != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl!,
+      fit: BoxFit.cover,
+      width: width,
+      height: height,
+      placeholder: (context, url) => BuildCircularLoading(),
+      errorWidget: (context, url, error) => Icon(
+        Icons.error,
+        color: Colors.black,
       ),
     );
   }

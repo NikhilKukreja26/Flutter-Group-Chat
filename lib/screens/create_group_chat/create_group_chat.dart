@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:group_chat_ui/widgets/build_circular_loading.dart';
+import 'package:group_chat_ui/widgets/build_custom_circular_button.dart';
 import 'package:group_chat_ui/widgets/build_text.dart';
 
 import 'package:sizer/sizer.dart';
@@ -40,7 +42,9 @@ class CreateGroupChat extends StatelessWidget {
                 //   ),
                 // ),
                 SizedBox(height: 1.h),
-                BuildCreateGroupChatRow(),
+                BuildCreateGroupChatRow(
+                  text: 'Create group chat',
+                ),
                 SizedBox(height: 10.h),
                 BuildCircularChatImage(),
                 SizedBox(height: 5.5.h),
@@ -77,28 +81,26 @@ class CreateGroupChat extends StatelessWidget {
                     children: <Widget>[
                       Container(),
                       Container(),
-                      GridView.builder(
-                        padding: EdgeInsets.symmetric(vertical: 3.h),
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 5.h,
-                          mainAxisSpacing: 1.h,
-                          crossAxisSpacing: 1.h,
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.h),
+                        child: Wrap(
+                          runSpacing: 4.0,
+                          spacing: 10.0,
+                          alignment: WrapAlignment.center,
+                          children: controller.sportsList
+                              .map(
+                                (sport) => Chip(
+                                  backgroundColor: AppColors.primary,
+                                  label: BuildText(
+                                    sport,
+                                    color: AppColors.white,
+                                  ),
+                                  labelPadding:
+                                      EdgeInsets.symmetric(horizontal: 2.h),
+                                ),
+                              )
+                              .toList(),
                         ),
-                        itemCount: controller.sportsList.length,
-                        itemBuilder: (_, index) {
-                          final sport = controller.sportsList[index];
-                          return Chip(
-                            backgroundColor: AppColors.primary,
-                            label: BuildText(
-                              sport,
-                              color: AppColors.white,
-                            ),
-                            labelPadding: EdgeInsets.symmetric(horizontal: 3.h),
-                          );
-                        },
                       ),
                       Container(),
                     ],
@@ -168,7 +170,10 @@ class BuildChatpGroupName extends StatelessWidget {
 class BuildCreateGroupChatRow extends StatelessWidget {
   const BuildCreateGroupChatRow({
     Key? key,
+    required this.text,
   }) : super(key: key);
+
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +186,7 @@ class BuildCreateGroupChatRow extends StatelessWidget {
         ),
         SizedBox(width: 2.8.w),
         BuildText(
-          'Create group chat',
+          text!,
           color: AppColors.white,
         )
       ],
@@ -228,16 +233,11 @@ class BuildCircularChatImage extends StatelessWidget {
           Positioned(
             left: 26.w,
             bottom: 1.0,
-            child: CircleAvatar(
-              maxRadius: 20.0,
-              backgroundColor: AppColors.primary,
-              child: IconButton(
-                color: AppColors.white,
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit,
-                ),
-              ),
+            child: BuildCustomCircularButton(
+              iconData: FontAwesomeIcons.pencilAlt,
+              radius: 5,
+              iconSize: 5,
+              onTap: () {},
             ),
           ),
         ],

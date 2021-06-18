@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import 'res/app_colors.dart';
-import 'package:group_chat_ui/screens/create_group_chat/create_group_chat.dart';
+import 'routes/app_routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,8 +25,12 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
             ),
             scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
+            appBarTheme: AppBarTheme(
+              color: AppColors.primary,
+            ),
           ),
-          home: CreateGroupChat(),
+          initialRoute: AppRoutes.createGroupChat,
+          getPages: AppRoutes.pages,
         );
       },
     );
